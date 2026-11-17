@@ -1,0 +1,45 @@
+# IDENTIFY 2.0: frontend + backend, cada um no seu container.
+#
+#   docker compose up -d --build     sobe tudo (o primeiro build demora)
+#   http://localhost:8080            abre o sistema
+#   docker compose down              desliga
+#
+# Detalhes no LEIA-ME.md.
+
+name: identify2
+
+services:
+  backend:
+    build: ./backend
+    image: identify2-backend:2.0.0
+    environment:
+      AGAVE_DEVICE: cpu            # '0' usaria GPU, mas a imagem tem torch de CPU
+      AGAVE_CONF: "0.30"           # limiar do detector (calibrado para contagem)
+      AGAVE_LIMIAR_DOENTE: "0.5"   # a partir de qual prob_doente conta como suspeita
+      AGAVE_MOSTRAR_SADIAS: "0"    # a imagem marca so as suspeitas
+    # Exposto so para ESTA maquina, para a documentacao da API
+    # (http://localhost:8000/docs). O front nao precisa desta porta: ele fala
+    # com o backend pela rede interna do Docker.
+    ports:
+      - "127.0.0.1:${PORTA_API:-8000}:8000"   # troque com PORTA_API=8001 no .env
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      # o startup carrega os dois modelos antes de responder
+      start_period: 90s
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: ""           # vazio = API no mesmo endereco (via nginx)
+    image: identify2-frontend:2.0.0
+    ports:
+      - "${PORTA:-8080}:80"        # troque a porta com PORTA=9090 no .env
+    depends_on:
+      backend:
+        condition: service_healthy # so sobe com os modelos ja carregados
+    restart: unless-stopped

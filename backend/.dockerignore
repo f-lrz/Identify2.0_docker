@@ -1,0 +1,7 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+.git/
+.env
+verificacao_saida.jpg
