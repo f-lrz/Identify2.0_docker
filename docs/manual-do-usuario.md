@@ -37,16 +37,32 @@ Você vai precisar de:
 |---|---|
 | **Um navegador** | Chrome, Edge ou Firefox, no computador |
 | **O endereço do sistema** | Nesta instalação: **http://localhost:8080**. De outro computador da rede, quem administra o sistema informa o endereço (algo como `http://192.168.0.127:8080`) |
+| **Usuário e senha** | Informados por quem administra o sistema. Nesta instalação: usuário **admin**, senha **admin** |
 | **As fotos originais do drone** | Arquivos JPG do jeito que saíram do drone, sem cortar, reduzir nem passar por WhatsApp (ver [seção 6](#6-dicas-para-fotos-melhores)) |
 | **Internet** | O visual da página é carregado da internet; sem ela, a página abre sem formatação |
 
 ## 3. Passo a passo
 
-### Passo 1 — Abra o sistema
+### Passo 1 — Abra o sistema e entre
 
-Digite o endereço no navegador. Esta é a tela inicial:
+Digite o endereço no navegador. Aparece a página de entrada:
+
+![Página de entrada (login)](img/00-login.png)
+
+1. Em **Usuário**, digite o usuário (nesta instalação: `admin`).
+2. Em **Senha**, digite a senha (nesta instalação: `admin`).
+3. Clique em **Entrar** ou aperte **Enter**.
+
+Se aparecer *"Usuário ou senha incorretos."*, confira o que foi digitado
+(letras maiúsculas e minúsculas contam) e tente de novo.
+
+Depois de entrar, aparece a tela inicial. O botão **Sair**, no canto superior
+direito, volta para a página de entrada:
 
 ![Tela inicial do IDENTIFY 2.0](img/01-tela-inicial.png)
+
+Você continua conectado se atualizar a página (F5). Ao fechar a aba ou o
+navegador, será preciso entrar de novo.
 
 ### Passo 2 — Escolha as fotos
 
@@ -106,9 +122,26 @@ Clique na foto ou no botão **Visualizar imagem**:
 
 ![Foto ampliada](img/05-visualizar-ampliada.png)
 
-- O botão com as **quatro setas** (canto superior direito) abre a foto em
-  **tela cheia**, o melhor jeito de enxergar as caixas pequenas.
-- Para fechar: clique no **X**, aperte **Esc** no teclado ou clique fora da foto.
+**Dar zoom e percorrer a foto.** As caixas vermelhas são pequenas na foto
+inteira; use o zoom para ver a planta de perto:
+
+| Para... | Faça |
+|---|---|
+| **Aproximar ou afastar** | Role a **rodinha do mouse** sobre o ponto que quer ver: o zoom vai na direção do cursor. Ou use os botões **+** e **−** (canto superior direito), ou as teclas **+** e **−** |
+| **Percorrer a foto com zoom** | **Clique e arraste** a foto (o cursor vira uma mãozinha) |
+| **Aproximar rápido um ponto** | **Duplo clique** sobre ele. Outro duplo clique volta ao tamanho normal |
+| **Voltar ao tamanho normal** | Botão com a **seta circular**, ou a tecla **0** |
+| **Tela de toque** (notebook, tablet) | Afaste ou junte **dois dedos** para dar zoom; arraste com um dedo |
+
+O número ao lado dos botões mostra o zoom atual (100% = foto inteira; vai até 1000%):
+
+![Foto com zoom em uma planta suspeita](img/05b-zoom.png)
+
+- O botão com as **quatro setas** abre a foto em **tela cheia**, que também
+  aceita zoom e arraste. É o melhor jeito de examinar as plantas.
+- Para sair da tela cheia, aperte **Esc** ou clique de novo nas quatro setas.
+- Para fechar a foto: clique no **X**, aperte **Esc** (fora da tela cheia) ou
+  clique fora da foto.
 
 ### Passo 6 — Baixe as fotos marcadas
 
@@ -127,6 +160,11 @@ planta com precisão.
 Clique em **Enviar novas imagens**, no fim da página, e repita a partir do
 [Passo 2](#passo-2--escolha-as-fotos). Os resultados anteriores somem da tela.
 Baixe antes o que quiser guardar.
+
+### Passo 8 — Saia do sistema
+
+Ao terminar, clique em **Sair**, no canto superior direito. O sistema volta para
+a página de entrada. Se uma análise estiver em andamento, ela é cancelada.
 
 ## 4. Entendendo o resultado
 
@@ -207,6 +245,10 @@ O sistema funciona melhor com fotos parecidas com as que ele viu no treino:
 
 ## 7. Perguntas frequentes
 
+**Esqueci o usuário ou a senha. O que faço?**
+Fale com quem administra o sistema. Nesta instalação, o usuário e a senha são
+`admin` e `admin`. Não há cadastro de novos usuários nem recuperação de senha.
+
 **Posso fechar a página depois do resultado?**
 Pode, mas o resultado não fica salvo no sistema. Baixe as fotos antes.
 
@@ -239,4 +281,6 @@ com quem administra o sistema.
 | **Suspeita de doença** | Planta que o sistema considera com aparência de doente (número a partir de 0,50) |
 | **Probabilidade** | O número de 0 a 1 sobre a caixa vermelha: quanto mais perto de 1, mais confiante o sistema está |
 | **Foto original** | O arquivo do jeito que saiu do drone, sem nenhuma alteração |
+| **Zoom** | Aproximar a imagem para ver detalhes. 100% é a foto inteira na tela |
+| **Tela cheia** | A foto ocupando a tela toda, sem o resto da página |
 | **Altura de voo padrão** | A altura usada nos voos com que o sistema foi treinado |

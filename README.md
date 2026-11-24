@@ -41,7 +41,7 @@ docker compose up -d --build
 
 O primeiro build baixa cerca de 1 GB (PyTorch) e leva alguns minutos. Quando
 `docker compose ps` mostrar o backend como `healthy`, abra
-**http://localhost:8080**.
+**http://localhost:8080** e entre com usuário **admin** e senha **admin**.
 
 | Comando | Para quê |
 |---|---|
@@ -144,7 +144,8 @@ Identify2.0_docker/
 └── frontend/                    Aplicação Web (React)
     ├── Dockerfile               build com Node, servido por nginx
     ├── nginx.conf               serve o site e repassa /api ao backend
-    └── src/components/          telas: envio, progresso, resultado, erro
+    └── src/                     telas: login, envio, progresso, resultado
+                                 (com foto ampliada e zoom), erro
 ```
 
 ---
@@ -176,6 +177,9 @@ detalhes e as ressalvas estão nas fichas
   ou tirada baixo demais gera aviso e resultado pouco confiável.
 - **CPU apenas:** de ~15 a 20 s por foto no Docker, e uma análise por vez.
 - **Sem histórico:** nada é salvo; fechar a página perde o resultado.
+- **Login simples, não é segurança:** usuário e senha fixos (`admin`/`admin`),
+  conferidos no próprio navegador. Serve para a tela de envio não abrir direto,
+  mas a API do backend continua aberta para quem souber o endereço.
 - **Estilo da tela via internet:** sem internet, a página abre sem formatação.
 
 ---
@@ -216,6 +220,7 @@ mudanças pequenas e de baixo risco.
 | **Compilar o Tailwind no build** (em vez do CDN) | Funciona sem internet e fica mais estável | Curto |
 | **Fila de processamento** (ex.: Celery/RQ) com progresso por foto | Muitos usuários e lotes grandes sem estourar o tempo limite | Médio |
 | **Testes automatizados e CI** (GitHub Actions: lint, testes, build das imagens) | Evita regressões a cada mudança | Curto |
+| **Autenticação de verdade no backend**: contas de usuário, senha com hash e token (ex.: JWT) exigido pela API | O login deixa de ser só uma porta de entrada e passa a proteger a API | Médio |
 | **HTTPS, domínio e CORS restrito** ao endereço do frontend | Pronto para uso fora da rede local | Médio |
 | **Monitoramento e logs centralizados** | Identificar erros e lentidão em produção | Médio |
 | **Publicar as imagens num registro** (Docker Hub / GHCR) | Instalação sem build local | Curto |

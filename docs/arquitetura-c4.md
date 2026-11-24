@@ -57,6 +57,7 @@ envia pelo navegador.
 | **Uma foto por requisição, enviadas em sequência** | A análise leva ~15 a 20 s e ocupa todos os núcleos da CPU. Enviar em paralelo só faria as requisições esperarem e estourarem o tempo limite |
 | **Modelos carregados uma vez, no startup** | Carregar a cada requisição somaria segundos a cada foto. O frontend só sobe quando o backend está `healthy`, ou seja, com os modelos já carregados |
 | **Sem banco de dados** | O sistema não guarda fotos nem resultados: cada análise é independente. Persistência é uma das melhorias futuras (ver [README](../README.md#melhorias-e-novas-funcionalidades)) |
+| **Login simples, só no frontend** | Pedido do cliente: uma página de entrada para a tela de envio não abrir direto, com usuário fixo (`admin`/`admin`), sem cadastro, hash nem token. Não é controle de acesso: a API continua aberta (ver melhorias no README) |
 | **Inferência em CPU** | Funciona em qualquer servidor, sem placa de vídeo. GPU reduziria o tempo para menos de 1 s por foto, mas exige outra imagem e hardware dedicado |
 
 ---
@@ -84,9 +85,11 @@ envia pelo navegador.
 
 | Componente | Arquivo | Responsabilidade |
 |---|---|---|
-| IdentifyApp | `src/components/IdentifyApp.jsx` | Estado da tela (envio, carregando, resultado, erro), envio sequencial das fotos e cancelamento de uma análise anterior |
+| App + LoginPage | `src/App.jsx`, `src/components/LoginPage.jsx`, `src/auth.js` | Página de entrada (usuário e senha fixos, `admin`/`admin`). Mostra o login ou o sistema; a sessão fica no `sessionStorage` |
+| IdentifyApp | `src/components/IdentifyApp.jsx` | Estado da tela (envio, carregando, resultado, erro), envio sequencial das fotos, cancelamento de uma análise anterior e botão *Sair* |
 | UploadState | `src/components/UploadState.jsx` | Seleção de uma ou mais fotos, sem reduzir os arquivos |
 | LoadingState | `src/components/LoadingState.jsx` | Progresso da análise e, depois, a lista de resultados: resumo, visualização ampliada, baixar uma ou todas |
+| ImageViewer | `src/components/ImageViewer.jsx` | Foto ampliada com zoom (rodinha, botões, teclado, duplo clique, pinça) e arraste; tela cheia. Renderizada sobre a página inteira |
 | ErrorState | `src/components/ErrorState.jsx` | Mensagem de erro e botão *Tentar novamente* |
 | Header, HelpButton | `src/components/Header.jsx`, `HelpButton.jsx` | Título e botão de ajuda |
 

@@ -45,7 +45,7 @@ Abra um terminal **na raiz do repositório** (nesta máquina,
 |---|---|
 | Subir tudo (o 1º build baixa ~1 GB e demora alguns minutos) | `docker compose up -d --build` |
 | Ver se está pronto | `docker compose ps` (o backend fica `healthy` em ~30 s) |
-| Abrir o sistema | **http://localhost:8080** |
+| Abrir o sistema | **http://localhost:8080** (usuário `admin`, senha `admin`) |
 | Ver os logs | `docker compose logs -f` (Ctrl+C sai dos logs, não desliga) |
 | Desligar | `docker compose down` |
 | Ligar de novo (sem rebuild) | `docker compose up -d` |
@@ -83,6 +83,11 @@ Depois de mudar: `docker compose up -d` (recria o backend; não precisa de build
 **Trocar as portas:** crie um arquivo `.env` nesta pasta com `PORTA=9090`
 (sistema) e/ou `PORTA_API=8001` (documentação da API) e rode
 `docker compose up -d`.
+
+**Trocar o usuário ou a senha do login:** edite as constantes `USUARIO` e
+`SENHA` em `frontend/src/auth.js` e reconstrua o front com
+`docker compose up -d --build frontend`. O login é só uma porta de entrada para
+a tela (não há cadastro, hash nem token): a API do backend continua aberta.
 
 ## O que tem nas pastas
 

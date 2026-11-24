@@ -35,6 +35,20 @@ ordenada da mais suspeita para a menos. A imagem devolvida marca só as plantas
 com suspeita. É triagem, não diagnóstico: o texto da tela pede conferência em
 campo. Contrato completo no `API.md` do backend.
 
+## Login
+
+O sistema abre numa página de login simples: usuário **admin**, senha
+**admin** (definidos em `src/auth.js`). É só uma porta de entrada, combinada com
+o cliente: não há hash, token nem cadastro, e a API do backend continua aberta.
+A sessão dura até fechar a aba; o botão **Sair** volta ao login.
+
+## Foto ampliada com zoom
+
+Ao clicar numa foto do resultado, ela abre ampliada (`src/components/ImageViewer.jsx`),
+com zoom pela rodinha do mouse, pelos botões + e −, pelas teclas `+`, `-`, `0`,
+por duplo clique ou por pinça (tela de toque). Com zoom, arraste para percorrer a
+foto. Funciona também em tela cheia.
+
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
 Currently, two official plugins are available:

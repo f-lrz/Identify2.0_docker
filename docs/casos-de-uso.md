@@ -24,12 +24,23 @@ Fonte editável: [`diagramas/casos-de-uso.mmd`](diagramas/casos-de-uso.mmd)
 
 ## Casos de uso do Técnico / Agrônomo
 
+### UC16 — Entrar no sistema
+
+| | |
+|---|---|
+| **Ator** | Técnico / Agrônomo |
+| **Pré-condição** | Sistema no ar |
+| **Fluxo principal** | 1. O usuário abre o endereço do sistema. 2. O sistema mostra a página de entrada. 3. O usuário informa usuário e senha e clica em *Entrar*. 4. O sistema mostra a tela de envio de fotos |
+| **Fluxo alternativo** | 3a. Usuário ou senha incorretos: o sistema mostra *"Usuário ou senha incorretos."*, limpa a senha e continua na página de entrada |
+| **Pós-condição** | Sessão aberta até o usuário sair (UC17) ou fechar a aba; recarregar a página não pede o login de novo |
+| **Observação** | Login simples, combinado com o cliente: um único usuário fixo (`admin` / `admin`), sem cadastro, hash nem token. Serve para a tela de envio não abrir direto, e não protege a API |
+
 ### UC01 — Enviar fotos para análise
 
 | | |
 |---|---|
 | **Ator** | Técnico / Agrônomo |
-| **Pré-condição** | Sistema no ar; usuário com as fotos originais do drone |
+| **Pré-condição** | Usuário conectado (UC16) e com as fotos originais do drone |
 | **Fluxo principal** | 1. O usuário clica em *Escolher imagens*. 2. Seleciona uma ou mais fotos. 3. O sistema envia as fotos ao servidor **uma por vez** e, para cada uma, executa UC10 e UC11. 4. Ao terminar a última, exibe o resultado (UC03) |
 | **Fluxos alternativos** | 3a. Arquivo que não é imagem, vazio ou corrompido: o sistema interrompe e exibe a tela de erro (UC09). 3b. Servidor fora do ar: exibe erro de conexão (UC09) |
 | **Pós-condição** | Resultado de todas as fotos exibido na tela; nada é armazenado no servidor |
@@ -65,7 +76,8 @@ Fonte editável: [`diagramas/casos-de-uso.mmd`](diagramas/casos-de-uso.mmd)
 | | |
 |---|---|
 | **Ator** | Técnico / Agrônomo |
-| **Fluxo** | 1. O usuário clica na foto ou em *Visualizar imagem*. 2. O sistema abre a foto ampliada. 3. Opcionalmente, o usuário usa a tela cheia. 4. O usuário fecha pelo X, pela tecla Esc ou clicando fora |
+| **Fluxo** | 1. O usuário clica na foto ou em *Visualizar imagem*. 2. O sistema abre a foto ampliada, ocupando a tela. 3. Opcionalmente, o usuário dá zoom (UC18) e usa a tela cheia. 4. O usuário fecha pelo X, pela tecla Esc ou clicando fora |
+| **Estendido por** | UC18 |
 
 ### UC06 — Baixar foto marcada
 
@@ -97,6 +109,24 @@ Fonte editável: [`diagramas/casos-de-uso.mmd`](diagramas/casos-de-uso.mmd)
 | **Ator** | Técnico / Agrônomo |
 | **Pré-condição** | Tela *"Erro na análise"* exibida, com a mensagem do problema |
 | **Fluxo** | O usuário clica em *Tentar novamente*; o sistema volta à tela inicial |
+
+### UC17 — Sair do sistema
+
+| | |
+|---|---|
+| **Ator** | Técnico / Agrônomo |
+| **Pré-condição** | Usuário conectado (UC16) |
+| **Fluxo** | O usuário clica em *Sair*; o sistema encerra a sessão, cancela uma análise em andamento e volta à página de entrada |
+
+### UC18 — Dar zoom e percorrer a foto
+
+| | |
+|---|---|
+| **Ator** | Técnico / Agrônomo |
+| **Pré-condição** | Foto ampliada aberta (UC05), na janela ou em tela cheia |
+| **Fluxo principal** | 1. O usuário rola a rodinha do mouse sobre um ponto; o sistema amplia (ou reduz) mantendo esse ponto sob o cursor, de 100% até 1000%. 2. Com zoom, o usuário arrasta a foto para percorrê-la; o sistema não deixa a foto sair da área de visualização. 3. O usuário volta ao tamanho normal pelo botão de seta circular, pela tecla 0 ou por duplo clique |
+| **Fluxos alternativos** | 1a. Botões + e −, ou teclas + e −: zoom de 1,5x por vez, centrado. 1b. Duplo clique sem zoom: amplia 3x no ponto clicado. 1c. Tela de toque: pinça com dois dedos para o zoom e um dedo para arrastar |
+| **Estende** | UC05 |
 
 ## Casos de uso internos do sistema
 
