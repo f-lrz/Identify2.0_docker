@@ -8,22 +8,16 @@ Um comando sobe tudo; o sistema abre em **http://localhost:8080**.
 
 ## Como está montado
 
-```
-navegador ──► http://localhost:8080
-                │
-        ┌───────▼────────┐  container "frontend" (nginx)
-        │ site React     │  serve a tela e repassa /api/... ao backend
-        │ /api/* ─────────┼──┐
-        └────────────────┘  │  rede interna do Docker
-                    ┌────────▼────────┐  container "backend" (FastAPI)
-                    │ detector + saúde │  models/best.pt + classificador_saude.pt
-                    └─────────────────┘
-```
+O navegador acessa só a porta **8080**. Ali, o container `frontend` (nginx)
+entrega a tela e repassa as chamadas `/api/...` ao container `backend`
+(FastAPI, com os dois modelos) pela rede interna do Docker:
+
+![Containers do IDENTIFY 2.0](diagramas/c4-2-containers.png)
 
 **Por que dois containers, e não um só:**
 
 - **Tamanhos muito diferentes.** O backend carrega torch + ultralytics + os
-  modelos (imagem de ~2 GB). O frontend é um site estático (~50 MB). Mudar um
+  modelos (imagem de ~2,6 GB). O frontend é um site estático (~90 MB). Mudar um
   texto da tela reconstrói só o front, em segundos, sem tocar no backend.
 - **Cada um faz uma coisa.** O nginx é feito para servir site e repassar
   requisições; o Python fica só com a inferência.

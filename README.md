@@ -66,6 +66,10 @@ Detalhes de operação, configuração e solução de problemas:
 | [Ficha do detector](backend/models/MODELO.md) | Quem avalia o modelo | Dados, métricas e limitações do detector de agaves |
 | [Ficha do classificador de saúde](backend/models/MODELO_SAUDE.md) | Quem avalia o modelo | Dados, métricas, convenção das plantas secas e limitações |
 
+O manual do usuário e o guia de operação também estão em **Word e PDF**, para
+imprimir ou enviar: [`docs/exportados/`](docs/exportados/)
+(`manual-do-usuario.docx/.pdf` e `operacao-docker.docx/.pdf`).
+
 ---
 
 ## Como funciona
