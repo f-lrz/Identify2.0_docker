@@ -25,6 +25,10 @@ Você envia fotos da plantação tiradas com o drone, e o sistema:
 - **aponta as plantas com suspeita de doença**, marcando-as com uma caixa
   vermelha na foto.
 
+Você acessa o sistema pelo navegador, entrando com usuário e senha. Depois, pode
+**ampliar as fotos com zoom** para examinar cada planta suspeita de perto e
+**baixar as fotos marcadas**.
+
 > **Importante: o IDENTIFY 2.0 faz triagem, não diagnóstico.** Ele indica
 > *onde vale a pena olhar primeiro*. A confirmação de que uma planta está doente
 > é sempre feita por uma pessoa, em campo.
@@ -164,7 +168,14 @@ Baixe antes o que quiser guardar.
 ### Passo 8 — Saia do sistema
 
 Ao terminar, clique em **Sair**, no canto superior direito. O sistema volta para
-a página de entrada. Se uma análise estiver em andamento, ela é cancelada.
+a página de entrada.
+
+> **Atenção:** ao sair, os resultados que estão na tela são descartados e uma
+> análise em andamento é cancelada. **Baixe antes** as fotos que quiser guardar
+> ([Passo 6](#passo-6--baixe-as-fotos-marcadas)).
+
+Fechar a aba ou o navegador também encerra o acesso: na próxima vez, será
+preciso entrar de novo.
 
 ## 4. Entendendo o resultado
 
@@ -181,6 +192,19 @@ em cima. O número é a **probabilidade de doença** estimada pelo sistema:
 | **entre 0,50 e 0,80** | Suspeita moderada. Vale conferir, mas pode ser outra coisa (sombra, poeira, folha seca) |
 
 Só aparecem na foto as plantas com número **a partir de 0,50**.
+
+### Como examinar uma planta suspeita
+
+Na foto inteira, a caixa vermelha é pequena. Para olhar a planta de perto:
+
+1. Clique na foto para abri-la ampliada ([Passo 5](#passo-5--veja-a-foto-em-tamanho-grande)).
+2. Clique nas **quatro setas** para usar a **tela cheia**.
+3. Coloque o cursor sobre a caixa vermelha e **role a rodinha do mouse** até
+   enxergar bem a planta (300% a 500% costuma bastar).
+4. Para ir à próxima suspeita, **arraste a foto** até ela, ou volte ao tamanho
+   normal (tecla **0**) e repita o passo 3.
+5. Anote o que precisa ser conferido em campo. Para levar a foto, use
+   **Baixar foto** ([Passo 6](#passo-6--baixe-as-fotos-marcadas)).
 
 ### O que o sistema chama de "suspeita de doença"
 
@@ -202,6 +226,13 @@ menos numa foto típica. Plantas muito juntas ou cobertas por outras podem ser
 contadas juntas ou ficar de fora.
 
 ## 5. Avisos e erros
+
+### Ao entrar no sistema
+
+| Mensagem | Causa | O que fazer |
+|---|---|---|
+| *"Usuário ou senha incorretos."* | O usuário ou a senha não conferem. Letras maiúsculas e minúsculas contam, e um espaço a mais na senha também | Digite de novo. Se não lembrar, fale com quem administra o sistema |
+| A página não abre (*"Não é possível acessar esse site"*) | O sistema está desligado ou o endereço está errado | Confira o endereço; se estiver certo, avise quem administra o sistema |
 
 ### Avisos (caixa amarela)
 
@@ -250,7 +281,16 @@ Fale com quem administra o sistema. Nesta instalação, o usuário e a senha sã
 `admin` e `admin`. Não há cadastro de novos usuários nem recuperação de senha.
 
 **Posso fechar a página depois do resultado?**
-Pode, mas o resultado não fica salvo no sistema. Baixe as fotos antes.
+Pode, mas o resultado não fica salvo no sistema: baixe as fotos antes. Ao abrir
+de novo, será preciso entrar com usuário e senha.
+
+**Por que a rodinha do mouse não dá zoom na lista de resultados?**
+Na lista, a rodinha só rola a página. O zoom funciona na **foto ampliada**:
+clique na foto (ou em **Visualizar imagem**) e use a rodinha ali.
+
+**Até quanto dá para ampliar? A imagem fica borrada?**
+Até 1000%. Como a foto tem a resolução original do drone, entre 300% e 500% a
+planta aparece com detalhe. Acima disso a imagem começa a mostrar os pixels.
 
 **O sistema guarda as minhas fotos?**
 Não. A foto é analisada e descartada; nada fica armazenado no servidor.
@@ -277,6 +317,8 @@ com quem administra o sistema.
 | Termo | Significado |
 |---|---|
 | **Agave** | A planta analisada pelo sistema |
+| **Login (entrar)** | Informar usuário e senha na página de entrada para usar o sistema |
+| **Sessão** | O período em que você fica conectado: vai do login até clicar em **Sair** ou fechar a aba |
 | **Triagem** | Separação inicial que aponta o que conferir primeiro. Não é um diagnóstico |
 | **Suspeita de doença** | Planta que o sistema considera com aparência de doente (número a partir de 0,50) |
 | **Probabilidade** | O número de 0 a 1 sobre a caixa vermelha: quanto mais perto de 1, mais confiante o sistema está |
