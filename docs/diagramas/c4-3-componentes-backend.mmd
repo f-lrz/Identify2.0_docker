@@ -1,0 +1,34 @@
+---
+title: "IDENTIFY 2.0 — C4 Nível 3: Componentes da API de Visão (backend)"
+---
+flowchart TB
+  web["<b>Servidor Web</b><br/>[Container: nginx]<br/><br/>Repassa /api ao backend"]
+
+  subgraph api["API de Visão — FastAPI"]
+    direction TB
+    app["<b>Aplicação</b><br/>[Componente: app/main.py, core/config.py]<br/><br/>Carrega os modelos no startup,<br/>CORS, /health e página de teste"]
+    rota["<b>Rota de análise</b><br/>[Componente: app/api/routes.py]<br/><br/>POST /api/analyze: valida o upload<br/>e monta a resposta JSON"]
+    servico["<b>Serviço de visão</b><br/>[Componente: app/services/vision_service.py]<br/><br/>Orquestra detecção e saúde, desenha as<br/>suspeitas e codifica a imagem. Configurado<br/>por variáveis de ambiente"]
+    detector["<b>DetectorAgave</b><br/>[Componente: agave_detector/detector.py, tiling.py]<br/><br/>Corta a foto em tiles de 1024 px, roda o YOLO<br/>em cada um, junta com NMS global e gera avisos"]
+    saude["<b>ClassificadorSaude</b><br/>[Componente: agave_detector/saude.py]<br/><br/>Recorta cada planta em 224 px, calcula<br/>prob_doente e ordena por suspeita"]
+  end
+
+  modelos[("<b>Modelos de IA</b><br/>[Arquivos .pt]<br/><br/>best.pt e<br/>classificador_saude.pt")]
+
+  web -- "POST /api/analyze" --> rota
+  rota -- "process_image(foto)" --> servico
+  app -- "obter_modelos()<br/>no startup" --> servico
+  servico -- "1. detectar()" --> detector
+  servico -- "2. prob_doente()<br/>das caixas" --> saude
+  detector -- "lê best.pt" --> modelos
+  saude -- "lê classificador_saude.pt" --> modelos
+
+  classDef pessoa fill:#08427b,stroke:#052e56,color:#ffffff
+  classDef sistema fill:#1168bd,stroke:#0b4884,color:#ffffff
+  classDef externo fill:#999999,stroke:#6b6b6b,color:#ffffff
+  classDef container fill:#438dd5,stroke:#2e6295,color:#ffffff
+  classDef componente fill:#85bbf0,stroke:#5d82a8,color:#0b2545
+  classDef fronteira fill:none,stroke:#444444,stroke-dasharray:6 4,color:#222222
+  class web,modelos container
+  class app,rota,servico,detector,saude componente
+  class api fronteira

@@ -1,4 +1,7 @@
-# IDENTIFY 2.0 — Docker
+# Operação com Docker — IDENTIFY 2.0
+
+Guia para quem instala, liga e mantém o sistema. Visão geral do projeto no
+[README](../README.md); uso da tela no [manual do usuário](manual-do-usuario.md).
 
 O sistema completo (frontend + backend com os dois modelos) em containers.
 Um comando sobe tudo; o sistema abre em **http://localhost:8080**.
@@ -41,7 +44,8 @@ containers (em *Settings → Resources*).
 
 ## Comandos
 
-Abra um terminal **nesta pasta** (`C:\Users\Teste\Documents\Identify2.0_docker`):
+Abra um terminal **na raiz do repositório** (nesta máquina,
+`C:\Users\Teste\Documents\GitHub\Identify2.0_docker`):
 
 | O que | Comando |
 |---|---|
@@ -90,7 +94,9 @@ Depois de mudar: `docker compose up -d` (recria o backend; não precisa de build
 
 ```
 Identify2.0_docker/
+  README.md              visão geral do projeto
   docker-compose.yml     liga os dois containers
+  docs/                  manual, arquitetura (C4), casos de uso, este guia
   backend/               código do identify2.0-backend (branch feature/triagem-saude)
     Dockerfile
     models/              best.pt (detector) e classificador_saude.pt (saúde)
@@ -106,7 +112,7 @@ mudou algo lá e quer refletir aqui, copie de novo (abaixo) e rode
 
 ```powershell
 $G = "C:\Users\Teste\Documents\GitHub"
-$D = "C:\Users\Teste\Documents\Identify2.0_docker"
+$D = "C:\Users\Teste\Documents\GitHub\Identify2.0_docker"
 git -C "$G\identify2.0-backend" archive -o "$env:TEMP\back.tar" HEAD
 tar -xf "$env:TEMP\back.tar" -C "$D\backend"
 git -C "$G\identify2.0-frontend" archive -o "$env:TEMP\front.tar" HEAD identify-app

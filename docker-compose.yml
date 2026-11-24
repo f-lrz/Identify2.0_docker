@@ -4,7 +4,7 @@
 #   http://localhost:8080            abre o sistema
 #   docker compose down              desliga
 #
-# Detalhes no LEIA-ME.md.
+# Detalhes em docs/operacao-docker.md.
 
 name: identify2
 
