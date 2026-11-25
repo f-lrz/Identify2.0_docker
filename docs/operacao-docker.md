@@ -1,26 +1,23 @@
-# IDENTIFY 2.0 — Docker
+# Operação com Docker — IDENTIFY 2.0
+
+Guia para quem instala, liga e mantém o sistema. Visão geral do projeto no
+[README](../README.md); uso da tela no [manual do usuário](manual-do-usuario.md).
 
 O sistema completo (frontend + backend com os dois modelos) em containers.
 Um comando sobe tudo; o sistema abre em **http://localhost:8080**.
 
 ## Como está montado
 
-```
-navegador ──► http://localhost:8080
-                │
-        ┌───────▼────────┐  container "frontend" (nginx)
-        │ site React     │  serve a tela e repassa /api/... ao backend
-        │ /api/* ─────────┼──┐
-        └────────────────┘  │  rede interna do Docker
-                    ┌────────▼────────┐  container "backend" (FastAPI)
-                    │ detector + saúde │  models/best.pt + classificador_saude.pt
-                    └─────────────────┘
-```
+O navegador acessa só a porta **8080**. Ali, o container `frontend` (nginx)
+entrega a tela e repassa as chamadas `/api/...` ao container `backend`
+(FastAPI, com os dois modelos) pela rede interna do Docker:
+
+![Containers do IDENTIFY 2.0](diagramas/c4-2-containers.png)
 
 **Por que dois containers, e não um só:**
 
 - **Tamanhos muito diferentes.** O backend carrega torch + ultralytics + os
-  modelos (imagem de ~2 GB). O frontend é um site estático (~50 MB). Mudar um
+  modelos (imagem de ~2,6 GB). O frontend é um site estático (~90 MB). Mudar um
   texto da tela reconstrói só o front, em segundos, sem tocar no backend.
 - **Cada um faz uma coisa.** O nginx é feito para servir site e repassar
   requisições; o Python fica só com a inferência.
@@ -41,13 +38,14 @@ containers (em *Settings → Resources*).
 
 ## Comandos
 
-Abra um terminal **nesta pasta** (`C:\Users\Teste\Documents\Identify2.0_docker`):
+Abra um terminal **na raiz do repositório** (nesta máquina,
+`C:\Users\Teste\Documents\GitHub\Identify2.0_docker`):
 
 | O que | Comando |
 |---|---|
 | Subir tudo (o 1º build baixa ~1 GB e demora alguns minutos) | `docker compose up -d --build` |
 | Ver se está pronto | `docker compose ps` (o backend fica `healthy` em ~30 s) |
-| Abrir o sistema | **http://localhost:8080** |
+| Abrir o sistema | **http://localhost:8080** (usuário `admin`, senha `admin`) |
 | Ver os logs | `docker compose logs -f` (Ctrl+C sai dos logs, não desliga) |
 | Desligar | `docker compose down` |
 | Ligar de novo (sem rebuild) | `docker compose up -d` |
@@ -86,11 +84,18 @@ Depois de mudar: `docker compose up -d` (recria o backend; não precisa de build
 (sistema) e/ou `PORTA_API=8001` (documentação da API) e rode
 `docker compose up -d`.
 
+**Trocar o usuário ou a senha do login:** edite as constantes `USUARIO` e
+`SENHA` em `frontend/src/auth.js` e reconstrua o front com
+`docker compose up -d --build frontend`. O login é só uma porta de entrada para
+a tela (não há cadastro, hash nem token): a API do backend continua aberta.
+
 ## O que tem nas pastas
 
 ```
 Identify2.0_docker/
+  README.md              visão geral do projeto
   docker-compose.yml     liga os dois containers
+  docs/                  manual, arquitetura (C4), casos de uso, este guia
   backend/               código do identify2.0-backend (branch feature/triagem-saude)
     Dockerfile
     models/              best.pt (detector) e classificador_saude.pt (saúde)
@@ -106,7 +111,7 @@ mudou algo lá e quer refletir aqui, copie de novo (abaixo) e rode
 
 ```powershell
 $G = "C:\Users\Teste\Documents\GitHub"
-$D = "C:\Users\Teste\Documents\Identify2.0_docker"
+$D = "C:\Users\Teste\Documents\GitHub\Identify2.0_docker"
 git -C "$G\identify2.0-backend" archive -o "$env:TEMP\back.tar" HEAD
 tar -xf "$env:TEMP\back.tar" -C "$D\backend"
 git -C "$G\identify2.0-frontend" archive -o "$env:TEMP\front.tar" HEAD identify-app

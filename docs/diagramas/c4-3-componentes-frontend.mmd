@@ -1,0 +1,38 @@
+---
+title: "IDENTIFY 2.0 — C4 Nível 3: Componentes da Aplicação Web (frontend)"
+---
+flowchart TB
+  tecnico["<b>Técnico / Agrônomo</b><br/>[Pessoa]"]
+
+  subgraph spa["Aplicação Web — React"]
+    direction TB
+    login["<b>App + LoginPage</b><br/>[Componentes: App.jsx, LoginPage.jsx, auth.js]<br/><br/>Página de entrada (admin/admin).<br/>Mostra o login ou o sistema"]
+    upload["<b>UploadState</b><br/>[Componente: components/UploadState.jsx]<br/><br/>Seleção de uma ou mais fotos"]
+    app["<b>IdentifyApp</b><br/>[Componente: components/IdentifyApp.jsx]<br/><br/>Controla as telas (envio, carregando,<br/>resultado, erro) e envia as fotos uma por vez"]
+    resultado["<b>LoadingState</b><br/>[Componente: components/LoadingState.jsx]<br/><br/>Progresso; depois a lista de resultados<br/>com resumo, visualização e downloads"]
+    viewer["<b>ImageViewer</b><br/>[Componente: components/ImageViewer.jsx]<br/><br/>Foto ampliada com zoom (rodinha,<br/>botões, pinça) e arraste; tela cheia"]
+    erro["<b>ErrorState</b><br/>[Componente: components/ErrorState.jsx]<br/><br/>Mensagem de erro e<br/>'Tentar novamente'"]
+    extras["<b>Header e HelpButton</b><br/>[Componentes: Header.jsx, HelpButton.jsx]<br/><br/>Título e botão de ajuda"]
+  end
+
+  api["<b>Servidor Web + API de Visão</b><br/>[Containers: nginx → FastAPI]<br/><br/>Recebe /api/analyze"]
+
+  tecnico -- "Entra com<br/>usuário e senha" --> login
+  login -- "Sessão aberta" --> app
+  tecnico -- "Escolhe as fotos" --> upload
+  upload -- "Arquivos<br/>selecionados" --> app
+  app -- "POST /api/analyze, uma foto por vez<br/>[fetch, HTTP]" --> api
+  app -- "Progresso e<br/>resultados" --> resultado
+  app -- "Mensagem<br/>de erro" --> erro
+  resultado -- "Foto clicada" --> viewer
+
+  classDef pessoa fill:#08427b,stroke:#052e56,color:#ffffff
+  classDef sistema fill:#1168bd,stroke:#0b4884,color:#ffffff
+  classDef externo fill:#999999,stroke:#6b6b6b,color:#ffffff
+  classDef container fill:#438dd5,stroke:#2e6295,color:#ffffff
+  classDef componente fill:#85bbf0,stroke:#5d82a8,color:#0b2545
+  classDef fronteira fill:none,stroke:#444444,stroke-dasharray:6 4,color:#222222
+  class tecnico pessoa
+  class login,upload,app,resultado,viewer,erro,extras componente
+  class api container
+  class spa fronteira

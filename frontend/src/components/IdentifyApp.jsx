@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { LogOut } from 'lucide-react';
 import Header from './Header';
 import UploadState from './UploadState';
 import LoadingState from './LoadingState';
@@ -12,7 +13,7 @@ import HelpButton from './HelpButton';
 // (/api/analyze): é o modo do Docker, em que o nginx repassa /api ao backend.
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000';
 
-export default function IdentifyApp() {
+export default function IdentifyApp({ onLogout }) {
   // 'upload' | 'loading' | 'result' | 'error'
   const [status, setStatus] = useState('upload');
   const [results, setResults] = useState([]);
@@ -85,6 +86,18 @@ export default function IdentifyApp() {
 
   return (
     <div className="min-h-screen bg-[#fafafa] flex flex-col items-center justify-center p-4 relative font-sans">
+      {/* Sair volta à página de login; uma análise em andamento é cancelada
+          pelo abort do efeito de limpeza abaixo, ao desmontar. */}
+      {onLogout && (
+        <button
+          type="button"
+          onClick={onLogout}
+          className="absolute right-6 top-6 inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm transition-colors hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-zinc-900"
+        >
+          <LogOut className="h-4 w-4" aria-hidden="true" />
+          Sair
+        </button>
+      )}
       <Header />
 
       <main className="bg-white w-full max-w-3xl rounded-3xl border border-gray-100/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] p-10 md:p-14 flex flex-col items-center justify-center min-h-[380px]">

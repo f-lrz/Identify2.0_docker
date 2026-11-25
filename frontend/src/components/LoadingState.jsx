@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Download, Eye, Expand, Loader2, Upload, X } from 'lucide-react';
+import React, { useState } from 'react';
+import { Download, Eye, Loader2, Upload } from 'lucide-react';
 import exampleBoxes from '../exemplo_caixas.jpg';
+import ImageViewer from './ImageViewer';
 
 const nomeDownload = (result) => `agaves_${result?.filename || 'identificadas.jpg'}`;
 
@@ -114,46 +115,9 @@ export default function LoadingState({
 }) {
   // indice da foto aberta na visualizacao ampliada; null = fechada
   const [previewIndex, setPreviewIndex] = useState(null);
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const [baixandoTodas, setBaixandoTodas] = useState(false);
-  const previewRef = React.useRef(null);
   const isPreviewOpen = previewIndex !== null;
   const previewSource = isPreviewOpen ? results[previewIndex]?.image_data || exampleBoxes : null;
-
-  useEffect(() => {
-    if (!isPreviewOpen) {
-      return undefined;
-    }
-
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        setPreviewIndex(null);
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isPreviewOpen]);
-
-  useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(document.fullscreenElement === previewRef.current);
-    };
-
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
-  }, []);
-
-  const handleFullscreen = () => {
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
-      return;
-    }
-
-    if (previewRef.current?.requestFullscreen) {
-      previewRef.current.requestFullscreen();
-    }
-  };
 
   // Um download por foto, com um intervalo curto entre eles: disparar todos de
   // uma vez faz alguns navegadores ignorarem parte. Na primeira vez o navegador
@@ -227,46 +191,13 @@ export default function LoadingState({
         </>
       )}
 
+      {/* Foto ampliada, com zoom e arraste (ver ImageViewer.jsx) */}
       {isPreviewOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Visualização da imagem identificada"
-          onClick={() => setPreviewIndex(null)}
-        >
-          <div
-            ref={previewRef}
-            className="relative flex max-h-full max-w-4xl items-center justify-center rounded-2xl bg-white p-3 shadow-2xl fullscreen:bg-black fullscreen:p-6"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className="absolute right-5 top-5 z-10 flex gap-2">
-              <button
-                type="button"
-                onClick={handleFullscreen}
-                className="rounded-full bg-white/90 p-2 text-gray-900 shadow transition-colors hover:bg-white focus:outline-none focus:ring-2 focus:ring-zinc-900"
-                aria-label={isFullscreen ? 'Sair da tela cheia' : 'Exibir imagem em tela cheia'}
-                title={isFullscreen ? 'Sair da tela cheia' : 'Tela cheia'}
-              >
-                <Expand className="h-5 w-5" aria-hidden="true" />
-              </button>
-              <button
-                type="button"
-                onClick={() => setPreviewIndex(null)}
-                className="rounded-full bg-white/90 p-2 text-gray-900 shadow transition-colors hover:bg-white focus:outline-none focus:ring-2 focus:ring-zinc-900"
-                aria-label="Fechar visualização"
-                title="Fechar"
-              >
-                <X className="h-5 w-5" aria-hidden="true" />
-              </button>
-            </div>
-            <img
-              src={previewSource}
-              alt="Imagem identificada em tamanho ampliado"
-              className="max-h-[85vh] w-auto max-w-full rounded-xl object-contain fullscreen:max-h-full"
-            />
-          </div>
-        </div>
+        <ImageViewer
+          src={previewSource}
+          alt={`Imagem identificada em tamanho ampliado: ${results[previewIndex]?.filename || ''}`}
+          onClose={() => setPreviewIndex(null)}
+        />
       )}
     </div>
   );

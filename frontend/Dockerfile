@@ -1,7 +1,7 @@
 # Frontend do IDENTIFY 2.0, em duas etapas:
 #   1. Node compila o app React (Vite) para arquivos estaticos;
 #   2. nginx serve esses arquivos e repassa /api ao container do backend.
-# A imagem final nao tem Node: so o nginx e o site pronto (~50 MB).
+# A imagem final nao tem Node: so o nginx e o site pronto (~90 MB).
 
 FROM node:22-alpine AS build
 WORKDIR /app

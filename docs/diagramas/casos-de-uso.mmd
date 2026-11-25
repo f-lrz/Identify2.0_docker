@@ -1,0 +1,54 @@
+flowchart LR
+  tecnico(("👤<br/>Técnico /<br/>Agrônomo"))
+  operador(("👤<br/>Operador do<br/>sistema"))
+
+  subgraph sistema["Sistema IDENTIFY 2.0"]
+    direction TB
+    UC16(["UC16 Entrar no sistema"])
+    UC1(["UC01 Enviar fotos para análise"])
+    UC2(["UC02 Acompanhar o progresso"])
+    UC3(["UC03 Consultar o resultado"])
+    UC4(["UC04 Ver avisos de qualidade da foto"])
+    UC5(["UC05 Visualizar foto ampliada"])
+    UC18(["UC18 Dar zoom e percorrer a foto"])
+    UC6(["UC06 Baixar foto marcada"])
+    UC7(["UC07 Baixar todas as fotos"])
+    UC8(["UC08 Iniciar nova análise"])
+    UC9(["UC09 Tentar novamente após erro"])
+    UC17(["UC17 Sair do sistema"])
+    UC10(["UC10 Detectar agaves"])
+    UC11(["UC11 Fazer triagem de saúde"])
+    UC12(["UC12 Ligar e desligar o sistema"])
+    UC13(["UC13 Configurar o sistema"])
+    UC14(["UC14 Verificar se o sistema está no ar"])
+    UC15(["UC15 Consultar a documentação da API"])
+  end
+
+  tecnico --- UC16
+  tecnico --- UC1
+  tecnico --- UC2
+  tecnico --- UC3
+  tecnico --- UC5
+  tecnico --- UC6
+  tecnico --- UC7
+  tecnico --- UC8
+  tecnico --- UC9
+  tecnico --- UC17
+
+  UC1 -. "«include»" .-> UC10
+  UC1 -. "«include»" .-> UC11
+  UC4 -. "«extend»" .-> UC3
+  UC7 -. "«extend»" .-> UC6
+  UC18 -. "«extend»" .-> UC5
+
+  operador --- UC12
+  operador --- UC13
+  operador --- UC14
+  operador --- UC15
+
+  classDef ator fill:#ffffff,stroke:#334155,stroke-width:1.5px,color:#0f172a
+  classDef uc fill:#eef2ff,stroke:#4f46e5,color:#1e1b4b
+  classDef interno fill:#f1f5f9,stroke:#64748b,color:#334155,stroke-dasharray: 4 3
+  class tecnico,operador ator
+  class UC1,UC2,UC3,UC4,UC5,UC6,UC7,UC8,UC9,UC12,UC13,UC14,UC15,UC16,UC17,UC18 uc
+  class UC10,UC11 interno

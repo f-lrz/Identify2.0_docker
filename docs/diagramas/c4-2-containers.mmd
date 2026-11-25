@@ -1,0 +1,29 @@
+---
+title: "IDENTIFY 2.0 — C4 Nível 2: Containers"
+---
+flowchart TB
+  tecnico["<b>Técnico / Agrônomo</b><br/>[Pessoa]<br/><br/>Usa o sistema pelo navegador"]
+
+  subgraph sistema["IDENTIFY 2.0 — docker compose"]
+    direction TB
+    spa["<b>Aplicação Web</b><br/>[Container: React 19, Vite]<br/><br/>Telas de envio, progresso e resultado.<br/>Roda no navegador do usuário"]
+    web["<b>Servidor Web (frontend)</b><br/>[Container: nginx 1.27]<br/><br/>Serve a aplicação e repassa<br/>/api e /health ao backend. Porta 8080"]
+    api["<b>API de Visão (backend)</b><br/>[Container: Python 3.12, FastAPI, Uvicorn]<br/><br/>Recebe a foto, roda os dois modelos e devolve<br/>a imagem marcada + o resultado em JSON"]
+    modelos[("<b>Modelos de IA</b><br/>[Arquivos PyTorch .pt]<br/><br/>Detector YOLOv8s (best.pt) e<br/>classificador de saúde YOLOv8s-cls<br/>(classificador_saude.pt)")]
+  end
+
+  tecnico -- "Abre a página<br/>[HTTP :8080]" --> web
+  web -- "Entrega os arquivos<br/>da aplicação" --> spa
+  spa -- "POST /api/analyze com a foto<br/>[HTTP, multipart → JSON]" --> web
+  web -- "Repassa a requisição<br/>[HTTP :8000, rede interna do Docker]" --> api
+  api -- "Carrega uma vez,<br/>no startup" --> modelos
+
+  classDef pessoa fill:#08427b,stroke:#052e56,color:#ffffff
+  classDef sistema fill:#1168bd,stroke:#0b4884,color:#ffffff
+  classDef externo fill:#999999,stroke:#6b6b6b,color:#ffffff
+  classDef container fill:#438dd5,stroke:#2e6295,color:#ffffff
+  classDef componente fill:#85bbf0,stroke:#5d82a8,color:#0b2545
+  classDef fronteira fill:none,stroke:#444444,stroke-dasharray:6 4,color:#222222
+  class tecnico pessoa
+  class spa,web,api,modelos container
+  class sistema fronteira

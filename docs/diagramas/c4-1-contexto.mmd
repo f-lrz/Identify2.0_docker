@@ -1,0 +1,24 @@
+---
+title: "IDENTIFY 2.0 — C4 Nível 1: Contexto do sistema"
+---
+flowchart TB
+  tecnico["<b>Técnico / Agrônomo</b><br/>[Pessoa]<br/><br/>Fotografa a plantação com o drone,<br/>envia as fotos e confere em campo<br/>as plantas suspeitas"]
+  operador["<b>Operador do sistema</b><br/>[Pessoa]<br/><br/>Instala, liga, configura<br/>e mantém o sistema"]
+  drone["<b>Drone DJI</b><br/>[Sistema externo]<br/><br/>Gera as fotos aéreas<br/>originais (5472x3078)"]
+  identify["<b>IDENTIFY 2.0</b><br/>[Sistema de software]<br/><br/>Conta as agaves em fotos aéreas e aponta<br/>as plantas com suspeita de doença (triagem)"]
+  cdn["<b>CDN do Tailwind</b><br/>[Sistema externo]<br/><br/>Entrega os estilos da<br/>interface ao navegador"]
+
+  drone -- "Fotos originais<br/>[JPG]" --> tecnico
+  tecnico -- "Envia as fotos; recebe contagem,<br/>suspeitas e imagem marcada<br/>[navegador, HTTP]" --> identify
+  operador -- "Sobe, configura e monitora<br/>[Docker Compose]" --> identify
+  identify -- "A página carrega o CSS<br/>[HTTPS]" --> cdn
+
+  classDef pessoa fill:#08427b,stroke:#052e56,color:#ffffff
+  classDef sistema fill:#1168bd,stroke:#0b4884,color:#ffffff
+  classDef externo fill:#999999,stroke:#6b6b6b,color:#ffffff
+  classDef container fill:#438dd5,stroke:#2e6295,color:#ffffff
+  classDef componente fill:#85bbf0,stroke:#5d82a8,color:#0b2545
+  classDef fronteira fill:none,stroke:#444444,stroke-dasharray:6 4,color:#222222
+  class tecnico,operador pessoa
+  class identify sistema
+  class drone,cdn externo
